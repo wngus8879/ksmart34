@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+
+<th:block layout:fragment="customTitle">
+	<title>회원리스트</title>
+</th:block>
+<th:block layout:fragment="customContents">
+
+	<form th:action="@{/memberList}" method="post">	
+		<select name="sk">
+			<option value="m_id">회원아이디</option>
+			<option value="m_name">회원이름</option>
+		</select>
+		
+		<input type="text" name="sv">
+		<input type="submit" name="검색">
+	</form>
+
+
+
+	<table style="overflow: scroll" border="1";>
+		<thead>
+			<tr>
+				<th>아이디</th>
+				<th>비밀번호</th>
+				<th>이름</th>
+				<th>권한</th>
+				<th>이메일</th>
+				<th>수정</th>
+				<th>삭제</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="l : ${memberList}">
+				<td th:text="${l.mId}"></td>
+				<td th:text="${l.mPw}"></td>
+				<td th:text="${l.mName}"></td>
+				<td th:text="${l.mLevel}"></td>
+				<td th:text="${l.mEmail}"></td>
+				<td>
+				<a th:href="@{/mUpdate(mId=${l.mId})}">수정</a>
+				</td>
+				<td>
+				<a th:href="@{/mDelete(mId=${l.mId})}">삭제</a>
+				</td>
+			</tr>
+		</tbody>	
+	</table>
+	 
+	
+</th:block>
+</html>

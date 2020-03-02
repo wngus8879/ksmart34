@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+
+<th:block layout:fragment="customTitle">
+	<title>상품등록</title>
+</th:block>
+<th:block layout:fragment="customContents">
+	<form th:action="@{/gInsert}" method="post">
+		<table border="1">
+				<tr>
+					<td>상품명</td>
+					<td>
+						<input type="text" name="gName"/>
+					</td>
+				</tr>
+				<tr>
+					<td>구매자 아이디</td>
+					<td>
+						<input type="text" name="mId"/>
+					</td>
+				</tr>		
+				<tr>
+					<td>카테고리</td>
+					<td>
+						<input type="text" name="gCate"/>
+					</td>
+				</tr>	
+				<tr>
+					<td>가격</td>
+					<td>
+						<input type="text" name="gPrice"/>
+					</td>
+				</tr>	
+				<tr>
+					<td>상품색상</td>
+					<td>
+						<input type="text" name="gColor"/>
+					</td>
+				</tr>
+				<tr>
+					<td>상품사이즈</td>
+					<td>
+						<input type="text" name="gSize"/>
+					</td>
+				</tr>	
+				<tr>
+					<td>상세설명</td>
+					<td>
+						<input type="text" name="gDesc"/>
+					</td>
+				</tr>		
+				<tr>
+					<td colspan="2" style="text-align: center">
+						<input type="submit" value="상품등록"/>
+					</td>
+				</tr>	
+		</table>
+	</form>
+	
+	 
+	
+</th:block>
+</html>

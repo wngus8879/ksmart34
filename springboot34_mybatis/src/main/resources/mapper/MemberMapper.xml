@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ksmart.springboot34_mybatis.mapper.MemberMapper">
+
+	<resultMap type="kr.or.ksmart.springboot34_mybatis.domain.Member" id="memberResultMap">
+		<result property="mId" column="m_id"/>
+		<result property="mPw" column="m_pw"/>
+		<result property="mLevel" column="m_level"/>
+		<result property="mName" column="m_name"/>
+		<result property="mEmail" column="m_email"/>
+	</resultMap>
+	
+	<resultMap type="kr.or.ksmart.springboot34_mybatis.domain.Board" id="boardResultMap">
+		<result property="boardNo" column="board_no"/>
+		<result property="boardTitle" column="board_title"/>
+		<result property="boardContent" column="board_content"/>
+		<result property="boardUser" column="board_user"/>
+		<result property="boardDate" column="board_date"/>
+	</resultMap>
+	
+	<select id="getSearchMemberList" parameterType="String" 
+			resultMap="memberResultMap">
+	
+	SELECT
+		 m_id
+		, m_pw
+		, m_level
+		, m_name
+		, m_email
+	FROM tb_member
+	WHERE
+	 ${sk} LIKE CONCAT('%',#{sv},'%');
+	
+	
+	</select>
+	
+	<delete id="mDelete" parameterType="String">
+		DELETE FROM tb_member WHERE m_id=#{mId} and m_pw=#{mPw};
+	</delete>
+	
+	<update id="mUpdate" parameterType="Member">
+		UPDATE tb_member
+			<trim prefix="SET" suffixOverrides=",">
+				<if test="mPw neq null and  mPw neq ''.toString()"><!-- if 안에 있는 변수는 null값이 될 수 없으며 if 안의 변수가 null값이면 작동 안하며 자동으로 없애주겠다는 뜻. -->
+				m_pw=    #{mPw},		
+				</if>
+				<if test="mLevel neq null and  mLevel neq ''.toString()">
+				m_level= #{mLevel},
+				</if>
+				<if test="mName neq null and  mName neq ''.toString()">
+				m_name=  #{mName},
+				</if>
+				<if test="mEmail neq null and  mEmail neq ''.toString()">
+				m_email= #{mEmail}
+				</if>
+			</trim>	
+		WHERE m_id= #{mId}
+	
+	</update>
+
+	<select id="SelectForUpdate" parameterType="String" resultMap="memberResultMap">
+	SELECT
+		  m_id
+		, m_pw
+		, m_level
+		, m_name
+		, m_email
+	FROM tb_member
+	WHERE
+	m_id = #{mId};
+	</select>
+
+	<insert id="mInsert" parameterType="Member">
+	INSERT INTO tb_member (m_id
+							 ,m_pw
+							 ,m_level
+							 ,m_name
+							 ,m_email
+							 ) VALUES(
+							   #{mId}
+							 , #{mPw}
+							 , #{mLevel}
+							 , #{mName}
+							 , #{mEmail}
+							 );
+	
+	
+	
+	</insert>
+	
+	
+	
+	
+	<select id="getMemberList" resultType="kr.or.ksmart.springboot34_mybatis.domain.Member">
+		SELECT
+			 m_id 		AS mId
+			,m_pw 		AS mPw
+			,m_level 	AS mLevel
+			,m_name 	AS mName
+			,m_email 	AS mEmail
+		FROM
+			tb_member
+	</select>
+	
+	
+	<!-- 전체게시판 -->
+	<select id="getBoardList" parameterType="map" resultMap="boardResultMap">
+		SELECT 
+			board_no  
+		   ,board_title 
+		   ,board_content 
+		   ,board_user 
+		   ,board_date 
+		FROM 
+			tb_board
+		LIMIT #{startRow},#{rowPerPage}	
+	</select>
+	
+	<select id="getBoardRowCount" resultType="int">
+		SELECT 
+			 COUNT(*)
+		FROM 
+			 tb_board
+
+	</select>
+	
+	
+	
+</mapper>

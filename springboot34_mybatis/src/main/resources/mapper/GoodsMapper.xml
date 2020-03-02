@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ksmart.springboot34_mybatis.mapper.GoodsMapper">
+
+	<resultMap type="kr.or.ksmart.springboot34_mybatis.domain.Goods" id="goodsResultMap">
+		<result property="gCode" column="g_code"/>
+		<result property="mId" column="m_id"/>
+		<result property="gName" column="g_name"/>
+		<result property="gCate" column="g_cate"/>
+		<result property="gPrice" column="g_price"/>
+		<result property="gColor" column="g_color"/>
+		<result property="gSize" column="g_size"/>
+		<result property="gDate" column="g_date"/>
+		<result property="gDesc" column="g_desc"/>
+	</resultMap>
+		
+	<insert id="gInsert" parameterType="kr.or.ksmart.springboot34_mybatis.domain.Goods">
+	INSERT INTO tb_goods  (   g_code
+							 ,m_id	
+							 ,g_name
+							 ,g_cate
+							 ,g_price
+							 ,g_color
+							 ,g_size
+							 ,g_date
+							 ,g_desc
+							 ) VALUES(
+							   #{gCode}
+							 , #{mId}
+							 , #{gName}
+							 , #{gCate}
+							 , #{gPrice}
+							 , #{gColor}
+							 , #{gSize}
+							 , now()
+							 , #{gDesc}
+							 );
+	
+	
+	
+	</insert>
+	
+	<select id="getGoodsList" parameterType="String" resultType="kr.or.ksmart.springboot34_mybatis.domain.Goods">
+	SELECT
+			 g_code		AS gCode
+			,m_id 		AS mId
+			,g_name 	AS gName
+			,g_cate 	AS gCate
+			,g_price 	AS gPrice
+			,g_color 	AS gColor
+			,g_size 	AS gSize
+			,g_date 	AS gDate
+			,g_desc 	AS gDesc
+		FROM
+			tb_goods
+	</select>
+	
+	<select id="SelectForUpdate" parameterType="String" resultMap="goodsResultMap">
+	SELECT
+		 g_code
+		,m_id	
+		,g_name
+		,g_cate
+		,g_price
+		,g_color
+		,g_size
+		,g_date
+		,g_desc
+	FROM tb_goods
+	WHERE
+	g_code = #{gCode};
+	</select>
+	
+	<update id="gUpdate" parameterType="kr.or.ksmart.springboot34_mybatis.domain.Goods">
+		UPDATE tb_goods
+		SET
+			g_name=#{gName},
+			m_id=#{mId},
+			g_cate=#{gCate},
+			g_price=#{gPrice},
+			g_color=#{gColor},
+			g_size=#{gSize},
+			g_desc=#{gDesc} <!--이 마지막에는 ;를 찍지 말것!  -->
+		WHERE 
+			g_code=#{gCode}
+	
+	</update>
+	
+	<delete id="gDelete" parameterType="String">
+		DELETE FROM tb_goods WHERE g_code=#{gCode} and m_id=#{mId};
+	</delete>
+	
+	           
+	<select id="getSearchGoodsList" parameterType="String" 
+			resultMap="goodsResultMap">
+	
+	SELECT
+		 g_code
+		,m_id	
+		,g_name
+		,g_cate
+		,g_price
+		,g_color
+		,g_size
+		,g_date
+		,g_desc
+	FROM tb_goods
+	WHERE
+	 ${sk} LIKE CONCAT('%',#{sv},'%');
+	
+	
+	</select>
+	
+	
+	
+
+</mapper>

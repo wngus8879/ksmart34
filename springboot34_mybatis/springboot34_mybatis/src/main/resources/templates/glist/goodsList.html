@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+
+<th:block layout:fragment="customTitle">
+	<title>상품리스트</title>
+</th:block>
+<th:block layout:fragment="customContents">
+
+	<form th:action="@{/goodsList}" method="post">	
+		<select name="sk">
+			<option value="g_code">상품코드</option>
+			<option value="g_name">상품명</option>
+			<option value="m_id">아이디</option>
+			<option value="g_cate">카테고리</option>
+		</select>
+		
+		<input type="text" name="sv">
+		<input type="submit" value="검색">
+	</form>
+
+
+
+	<table style="overflow: scroll" border="1";>
+		<thead>
+			<tr>
+				<th>상품코드</th>
+				<th>구매자 아이디</th>
+				<th>상품명</th>
+				<th>카테고리</th>
+				<th>가격</th>
+				<th>상품색상</th>
+				<th>상품사이즈</th>
+				<th>구매날짜</th>
+				<th>상세설명</th>
+				<th>수정</th>
+				<th>삭제</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="l : ${goodsList}">
+				<td th:text="${l.gCode}"></td>
+				<td th:text="${l.mId}"></td>
+				<td th:text="${l.gName}"></td>
+				<td th:text="${l.gCate}"></td>
+				<td th:text="${l.gPrice}"></td>
+				<td th:text="${l.gColor}"></td>
+				<td th:text="${l.gSize}"></td>
+				<td th:text="${l.gDate}"></td>
+				<td th:text="${l.gDesc}"></td>
+				<td>
+				<a th:href="@{/gUpdate(gCode=${l.gCode})}">수정</a>
+				</td>
+				<td>
+				<a th:href="@{/gDelete(gCode=${l.gCode})}">삭제</a>
+				</td>
+			</tr>
+		</tbody>	
+	</table>
+	 
+	
+</th:block>
+</html>
